@@ -35,17 +35,7 @@
       "layout": {"visibility": "none"},
       "paint": {
         "hillshade-shadow-color": "rgba(162, 229, 194, 1)",
-        "hillshade-exaggeration": [
-          "interpolate",
-          ["linear"],
-          ["zoom"],
-          6,
-          0.1,
-          14,
-          0.3,
-          16,
-          0.2
-        ],
+        "hillshade-exaggeration": 0.5,
         "hillshade-highlight-color": "rgba(238, 255, 231, 1)"
       }
     },
@@ -160,10 +150,19 @@
       "type": "line",
       "source": "openmaptiles",
       "source-layer": "transportation",
-      "minzoom": 13,
+      "minzoom": 0,
       "filter": [
         "all",
-        ["in", "class", "footway", "path", "pedestrian"],
+        [
+          "in",
+          "class",
+          "footway",
+          "path",
+          "pedestrian",
+          "service",
+          "track",
+          "raceway"
+        ],
         ["==", "$type", "LineString"]
       ],
       "layout": {
@@ -173,41 +172,9 @@
       },
       "paint": {
         "line-color": "rgba(243, 243, 240, 1)",
-        "line-width": {"base": 2.2, "stops": [[13, 3], [16, 5], [25, 200]]}
-      }
-    },
-    {
-      "id": "road-service-track",
-      "type": "line",
-      "source": "openmaptiles",
-      "source-layer": "transportation",
-      "minzoom": 14,
-      "filter": ["all", ["in", "class", "service", "track", "raceway"]],
-      "layout": {
-        "line-join": "round",
-        "line-cap": "butt",
-        "visibility": "visible"
-      },
-      "paint": {
-        "line-color": "rgba(157, 168, 174, 1)",
-        "line-width": {"base": 2.2, "stops": [[13, 1.5], [24, 1200]]}
-      }
-    },
-    {
-      "id": "road-minor",
-      "type": "line",
-      "source": "openmaptiles",
-      "source-layer": "transportation",
-      "minzoom": 14,
-      "filter": ["all", ["==", "class", "minor"]],
-      "layout": {
-        "line-join": "round",
-        "line-cap": "round",
-        "visibility": "visible"
-      },
-      "paint": {
-        "line-color": "rgba(157, 168, 174, 1)",
-        "line-width": {"base": 2.2, "stops": [[11, 2], [24, 2000]]}
+        "line-width": 10,
+        "line-dasharray": [0, 2],
+        "line-blur": 6
       }
     },
     {
@@ -215,16 +182,18 @@
       "type": "line",
       "source": "openmaptiles",
       "source-layer": "transportation",
-      "minzoom": 13,
-      "filter": ["all", ["in", "class", "secondary", "tertiary"]],
+      "minzoom": 0,
+      "filter": ["all", ["in", "class", "secondary", "tertiary", "minor"]],
       "layout": {
         "line-join": "round",
-        "line-cap": "butt",
+        "line-cap": "round",
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "rgba(157, 168, 174, 1)",
-        "line-width": {"base": 2.2, "stops": [[11, 2], [13, 4], [24, 2500]]}
+        "line-color": "rgba(255, 255, 255, 1)",
+        "line-width": 10,
+        "line-blur": 3,
+        "line-dasharray": [0, 2]
       }
     },
     {
@@ -466,7 +435,7 @@
       "layout": {
         "line-join": "round",
         "line-cap": "butt",
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "line-color": "rgba(221, 123, 123, 1)",
@@ -493,7 +462,7 @@
       "layout": {
         "line-join": "round",
         "line-cap": "butt",
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "line-color": "rgba(221, 123, 123, 1)",
@@ -520,7 +489,7 @@
       "layout": {
         "line-join": "round",
         "line-cap": "butt",
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "line-color": "rgba(221, 123, 123, 1)",
@@ -541,7 +510,7 @@
       "layout": {
         "line-join": "round",
         "line-cap": "butt",
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "line-color": "rgba(221, 123, 123, 1)",
@@ -562,7 +531,7 @@
       "layout": {
         "line-join": "round",
         "line-cap": "butt",
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "line-color": "rgba(221, 123, 123, 1)",
