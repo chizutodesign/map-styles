@@ -14,31 +14,15 @@
   <div id="map"></div>
   <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
   <script>
-    // 地図の初期化
-    const map = new maplibregl.Map({
-      container: 'map',
-      style: './style.json', // カスタム地図スタイルへのパス
-      center: [138.73, 35.34], // 富士山
-      zoom: 13,
-      pitch: 60, // 3D表示のためのピッチ設定
-      bearing: -20 // 視点の回転角度
-    });
 
-    // 地形データの有効化
-  map.on('load', () => {
-  // 地形の有効化
-  map.setTerrain({ source: 'terrain', exaggeration: 1.5 });
-
-  // Skyレイヤーの追加（空を描画）
-  map.addLayer({
-    id: 'sky',
-    type: 'sky',
-    paint: {
-      'sky-type': 'atmosphere',
-      'sky-atmosphere-sun': [0.0, 90.0],
-      'sky-atmosphere-sun-intensity': 15
-    }
-  });
+const map = new maplibregl.Map({
+  container: 'map', // 地図を表示する要素のID
+  style: './style.json', // カスタムスタイルのパス
+  center: [139.6917, 35.6895], // 東京を中心に設定
+  zoom: 10, // 初期ズーム
+  minZoom: 4, // 最小ズームレベルを4に設定
+  pitch: 0, // ピッチ（傾き）を無効化
+  bearing: 0 // 回転をリセット
 });
 
   </script>
