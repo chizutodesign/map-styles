@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MapLibre 3D Terrain</title>
+  <link href="https://cdn.jsdelivr.net/npm/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { width: 100%; height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+  <script>
+    // 地図の初期化
+    const map = new maplibregl.Map({
+      container: 'map',
+      style: './style.json', // カスタム地図スタイルへのパス
+      center: [139.6917, 35.6895], // 初期表示の中心座標（例: 東京）
+      zoom: 10,
+      pitch: 60, // 3D表示のためのピッチ設定
+      bearing: -20 // 視点の回転角度
+    });
+
+    // 地形データの有効化
+    map.on('load', () => {
+      map.addSource('mapbox-dem', {
+        type: 'raster-dem',
+        url: 'mapbox://mapbox.terrain-rgb', // 地形データのURL（カスタムに置き換え可能）
+        tileSize: 512,
+        maxzoom: 14
+      });
+      map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 }); // 標高の誇張
+      map.addLayer({
+        id: 'sky',
+        type: 'sky',
+        paint: {
+          'sky-type': 'atmosphere',
+          'sky-atmosphere-sun': [0.0, 90.0],
+          'sky-atmosphere-sun-intensity': 15
+        }
+      });
+    });
+  </script>
+</body>
+</html>
