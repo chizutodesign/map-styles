@@ -25,24 +25,22 @@
     });
 
     // 地形データの有効化
-    map.on('load', () => {
-      map.addSource('mapbox-dem', {
-        type: 'raster-dem',
-        url: 'mapbox://mapbox.terrain-rgb', // 地形データのURL（カスタムに置き換え可能）
-        tileSize: 512,
-        maxzoom: 14
-      });
-      map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 }); // 標高の誇張
-      map.addLayer({
-        id: 'sky',
-        type: 'sky',
-        paint: {
-          'sky-type': 'atmosphere',
-          'sky-atmosphere-sun': [0.0, 90.0],
-          'sky-atmosphere-sun-intensity': 15
-        }
-      });
-    });
+  map.on('load', () => {
+  // 地形の有効化
+  map.setTerrain({ source: 'terrain', exaggeration: 1.5 });
+
+  // Skyレイヤーの追加（空を描画）
+  map.addLayer({
+    id: 'sky',
+    type: 'sky',
+    paint: {
+      'sky-type': 'atmosphere',
+      'sky-atmosphere-sun': [0.0, 90.0],
+      'sky-atmosphere-sun-intensity': 15
+    }
+  });
+});
+
   </script>
 </body>
 </html>
