@@ -19,8 +19,7 @@
       "attribution": "<a href=\"https://maps.gsi.go.jp/development/ichiran.html\">地理院タイル</a> | <a href=\"https://gbank.gsj.jp/seamless/elev/\">産総研シームレス標高タイル</a>"
     }
   },
-  "sprite": "https://mierune.github.io/openmaptiles-data/sprite",
-  "glyphs": "https://mierune.github.io/fonts/{fontstack}/{range}.pbf",
+  "glyphs": "https://chizutodesign.github.io/fonts/{fontstack}/{range}.pbf",
   "layers": [
     {
       "id": "background",
