@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MapLibre with OSM Attribution</title>
+  <title>3D Map with AIST Tiles</title>
   <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
   <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet">
   <style>
@@ -51,20 +51,44 @@
       style: 'https://chizutodesign.github.io/map-styles/style/night-view.json', // 初期スタイル
       center: [139.6917, 35.6895], // 東京の座標
       zoom: 10,
-      attributionControl: false // デフォルトのアトリビューションを無効化
+      minZoom: 4, // 最小ズーム
+      maxZoom: 20 // 最大ズーム
     });
 
-    // 拡大縮小ボタンを右上に追加
-    const navControl = new maplibregl.NavigationControl({
-      visualizePitch: true // 回転ボタンを有効化（任意）
-    });
-    map.addControl(navControl, 'top-right');
+    // ナビゲーションコントロールを右上に追加
+    map.addControl(new maplibregl.NavigationControl({
+      visualizePitch: true // 3D回転用のボタンを有効化
+    }), 'top-right');
 
-    // デフォルトのOSM脚注を右下に追加
-    const attributionControl = new maplibregl.AttributionControl({
-      compact: true // コンパクトな表示にする
+    // スタイルがロードされた後に3D用の設定を追加
+    map.on('style.load', () => {
+      // 産総研の標高タイルをソースとして追加
+      map.addSource('aist-dem', {
+        type: 'raster-dem',
+        tiles: [
+          'https://gbank.gsj.jp/tiles/elevation/ELEVATION/{z}/{x}/{y}.png'
+        ],
+        tileSize: 256,
+        attribution: '© <a href="https://gbank.gsj.jp/seamless/elev/" target="_blank">産総研 シームレス標高タイル</a>'
+      });
+
+      // 3D地形を設定
+      map.setTerrain({
+        source: 'aist-dem',
+        exaggeration: 1.0 // 地形の強調度
+      });
+
+      // 空のレイヤー（3D地形を強調するため）
+      map.addLayer({
+        id: 'sky',
+        type: 'sky',
+        paint: {
+          'sky-type': 'atmosphere',
+          'sky-atmosphere-sun': [0.0, 90.0],
+          'sky-atmosphere-sun-intensity': 15
+        }
+      });
     });
-    map.addControl(attributionControl, 'bottom-right');
 
     // スタイル切り替えボタンの動作
     document.getElementById('night-view').addEventListener('click', () => {
