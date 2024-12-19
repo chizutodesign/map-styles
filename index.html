@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Toggle Button</title>
+  <title>MapLibre with OSM Attribution</title>
   <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
   <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet">
   <style>
@@ -15,20 +15,33 @@
       width: 100%;
       height: 100vh;
     }
-    .maplibre-control-container .terrain-toggle {
-      background: url('https://cdn-icons-png.flaticon.com/512/609/609062.png') no-repeat center;
-      background-size: 20px 20px;
-      width: 40px;
-      height: 40px;
-      cursor: pointer;
+    .button-container {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1;
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      padding: 10px 15px;
       border: none;
-      border-radius: 4px;
-      background-color: white;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      background-color: #007AFF;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #005BB5;
     }
   </style>
 </head>
 <body>
+  <div class="button-container">
+    <button id="night-view">Night View</button>
+    <button id="inozu">Ino Map</button>
+  </div>
   <div id="map"></div>
 
   <script>
@@ -38,58 +51,29 @@
       style: 'https://chizutodesign.github.io/map-styles/style/night-view.json', // 初期スタイル
       center: [139.6917, 35.6895], // 東京の座標
       zoom: 10,
-      minZoom: 4, // 最小ズーム
-      maxZoom: 20 // 最大ズーム
+      attributionControl: false // デフォルトのアトリビューションを無効化
     });
 
-    // ナビゲーションコントロールを右上に追加
-    map.addControl(new maplibregl.NavigationControl(), 'top-right');
+    // 拡大縮小ボタンを右上に追加
+    const navControl = new maplibregl.NavigationControl({
+      visualizePitch: true // 回転ボタンを有効化（任意）
+    });
+    map.addControl(navControl, 'top-right');
 
-    // 地形表示用のカスタムボタンを追加
-    class TerrainToggle {
-      onAdd(map) {
-        this._map = map;
-        this._btn = document.createElement('button');
-        this._btn.className = 'terrain-toggle';
-        this._btn.type = 'button';
-        this._btn.title = 'Toggle Terrain';
-        this._btn.onclick = () => {
-          this.toggleTerrain();
-        };
-        return this._btn;
-      }
+    // デフォルトのOSM脚注を右下に追加
+    const attributionControl = new maplibregl.AttributionControl({
+      compact: true // コンパクトな表示にする
+    });
+    map.addControl(attributionControl, 'bottom-right');
 
-      onRemove() {
-        this._btn.parentNode.removeChild(this._btn);
-        this._map = undefined;
-      }
-
-      toggleTerrain() {
-        const terrainEnabled = this._map.getTerrain();
-        if (terrainEnabled) {
-          this._map.setTerrain(null); // 地形を無効化
-          this._btn.style.backgroundColor = 'white';
-        } else {
-          this._map.setTerrain({ source: 'aist-dem', exaggeration: 1.0 }); // 地形を有効化
-          this._btn.style.backgroundColor = '#ccc';
-        }
-      }
-    }
-
-    // 産総研の標高タイルを追加
-    map.on('style.load', () => {
-      map.addSource('aist-dem', {
-        type: 'raster-dem',
-        tiles: [
-          'https://gbank.gsj.jp/tiles/elevation/ELEVATION/{z}/{x}/{y}.png'
-        ],
-        tileSize: 256,
-        attribution: '© <a href="https://gbank.gsj.jp/seamless/elev/" target="_blank">産総研 シームレス標高タイル</a>'
-      });
+    // スタイル切り替えボタンの動作
+    document.getElementById('night-view').addEventListener('click', () => {
+      map.setStyle('https://chizutodesign.github.io/map-styles/style/night-view.json');
     });
 
-    // 地形表示のカスタムボタンを右上に追加
-    map.addControl(new TerrainToggle(), 'top-right');
+    document.getElementById('inozu').addEventListener('click', () => {
+      map.setStyle('https://chizutodesign.github.io/map-styles/style/inozu.json');
+    });
   </script>
 </body>
 </html>
