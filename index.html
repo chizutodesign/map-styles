@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Map with Style Hash</title>
+  <title>地図スタイル</title>
   <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
   <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet">
   <style>
@@ -39,16 +39,18 @@
 </head>
 <body>
   <div class="button-container">
-    <button id="night-view">夜景</button>
-    <button id="inozu">伊能図</button>
+    <button id="night-view">Night View</button>
+    <button id="inozu">Ino Map</button>
+    <button id="kyuhan">Kyuhan Map</button>
   </div>
   <div id="map"></div>
 
   <script>
-    // デフォルトスタイル
+    // スタイルの定義
     const styles = {
-      "night-view": "https://chizutodesign.github.io/map-styles/style/night-view.json",
-      "inozu": "https://chizutodesign.github.io/map-styles/style/inozu.json"
+      "夜景": "https://chizutodesign.github.io/map-styles/style/night-view.json",
+      "伊能図": "https://chizutodesign.github.io/map-styles/style/inozu.json",
+      "旧版地図": "https://chizutodesign.github.io/map-styles/style/kyuhan.json"
     };
 
     // 現在のハッシュ値を取得（デフォルトはnight-view）
@@ -78,6 +80,11 @@
 
     map.addControl(geolocateControl, 'top-right');
 
+    // 現在地ボタンがクリックされたときのログ（任意）
+    geolocateControl.on('geolocate', (position) => {
+      console.log('現在地:', position.coords.latitude, position.coords.longitude);
+    });
+
     // スタイル切り替えボタンの動作
     document.getElementById('night-view').addEventListener('click', () => {
       map.setStyle(styles["night-view"]); // スタイルを設定
@@ -87,6 +94,11 @@
     document.getElementById('inozu').addEventListener('click', () => {
       map.setStyle(styles["inozu"]); // スタイルを設定
       window.location.hash = "inozu"; // URLの末尾に#inozuを設定
+    });
+
+    document.getElementById('kyuhan').addEventListener('click', () => {
+      map.setStyle(styles["kyuhan"]); // スタイルを設定
+      window.location.hash = "kyuhan"; // URLの末尾に#kyuhanを設定
     });
   </script>
 </body>
