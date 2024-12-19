@@ -19,7 +19,7 @@
       "attribution": "<a href=\"https://maps.gsi.go.jp/development/ichiran.html\">地理院タイル</a> | <a href=\"https://gbank.gsj.jp/seamless/elev/\">産総研シームレス標高タイル</a>"
     }
   },
-  "glyphs": "https://chizutodesign.github.io/fonts/{fontstack}/{range}.pbf",
+  "glyphs": "https://mierune.github.io/fonts/{fontstack}/{range}.pbf",
   "layers": [
     {
       "id": "background",
@@ -309,7 +309,7 @@
       "minzoom": 13,
       "filter": ["all", ["in", "class", "railway"]],
       "layout": {
-        "text-font": ["Zen Old Mincho Medium"],
+        "text-font": ["LINESeedJP_OTF_Rg"],
         "text-field": ["coalesce", ["get", "name:ja_kana"]],
         "text-size": 12,
         "text-offset": [0, 0],
@@ -333,7 +333,7 @@
         ["in", "class", "hamlet", "islet", "quarter", "island", "neighbourhood"]
       ],
       "layout": {
-        "text-font": ["Zen Old Mincho Medium"],
+        "text-font": ["LINESeedJP_OTF_Rg"],
         "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
         "text-size": 12,
         "visibility": "visible"
@@ -352,7 +352,7 @@
       "minzoom": 12,
       "filter": ["all", ["==", "class", "suburb"]],
       "layout": {
-        "text-font": ["Zen Old Mincho Medium"],
+        "text-font": ["LINESeedJP_OTF_Rg"],
         "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
         "text-size": 13,
         "visibility": "visible"
@@ -371,7 +371,7 @@
       "minzoom": 8,
       "filter": ["all", ["==", "class", "village"]],
       "layout": {
-        "text-font": ["Zen Old Mincho Medium"],
+        "text-font": ["LINESeedJP_OTF_Rg"],
         "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
         "text-size": 13,
         "visibility": "visible",
@@ -391,7 +391,7 @@
       "minzoom": 7,
       "filter": ["all", ["==", "class", "town"]],
       "layout": {
-        "text-font": ["Zen Old Mincho Medium"],
+        "text-font": ["LINESeedJP_OTF_Rg"],
         "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
         "text-size": 14,
         "visibility": "visible",
@@ -414,7 +414,7 @@
       "maxzoom": 15,
       "filter": ["all", ["==", "class", "city"]],
       "layout": {
-        "text-font": ["Zen Old Mincho Medium"],
+        "text-font": ["LINESeedJP_OTF_Rg"],
         "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
         "text-size": 15,
         "visibility": "visible",
@@ -435,7 +435,7 @@
       "maxzoom": 10,
       "filter": ["all", ["in", "class", "province", "state"]],
       "layout": {
-        "text-font": ["Zen Old Mincho Medium"],
+        "text-font": ["LINESeedJP_OTF_Rg"],
         "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
         "text-size": {"stops": [[4, 12], [12, 20]]},
         "visibility": "visible",
@@ -455,7 +455,7 @@
       "maxzoom": 10,
       "filter": ["all", ["==", "capital", 2]],
       "layout": {
-        "text-font": ["Zen Old Mincho Medium"],
+        "text-font": ["LINESeedJP_OTF_Rg"],
         "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
         "text-size": {
           "property": "",
