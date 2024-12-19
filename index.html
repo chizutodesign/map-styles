@@ -1,30 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>いろいろな地図スタイル｜Map Styles</title>
-  <link href="https://cdn.jsdelivr.net/npm/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+  <title>Map Style Switcher</title>
+  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet">
   <style>
-    body { margin: 0; padding: 0; }
-    #map { width: 100%; height: 100vh; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    #map {
+      width: 100%;
+      height: 100vh;
+    }
+    .button-container {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1;
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      background-color: #007AFF;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #005BB5;
+    }
   </style>
 </head>
 <body>
+  <div class="button-container">
+    <button id="night-view">Night View</button>
+    <button id="inozu">Ino Map</button>
+  </div>
   <div id="map"></div>
-  <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+
   <script>
+    // MapLibreのマップを初期化
+    const map = new maplibregl.Map({
+      container: 'map', // マップを表示するdivのID
+      style: 'https://chizutodesign.github.io/map-styles/style/night-view.json', // 初期スタイル
+      center: [139.6917, 35.6895], // 東京の中心座標
+      zoom: 10
+    });
 
-const map = new maplibregl.Map({
-  container: 'map', // 地図を表示する要素のID
-  style: 'style/night-view.json', // カスタムスタイルのパス
-  center: [139.7, 35.7], // 地図中心
-  zoom: 9, // 初期ズーム
-  minZoom: 4, // 最小ズームレベルを4に設定
-  pitch: 0, // ピッチ（傾き）を無効化
-  bearing: 0 // 回転をリセット
-});
+    // ボタンのクリックイベントでスタイルを切り替え
+    document.getElementById('night-view').addEventListener('click', () => {
+      map.setStyle('https://chizutodesign.github.io/map-styles/style/night-view.json');
+    });
 
+    document.getElementById('inozu').addEventListener('click', () => {
+      map.setStyle('https://chizutodesign.github.io/map-styles/style/inozu.json');
+    });
   </script>
 </body>
 </html>
