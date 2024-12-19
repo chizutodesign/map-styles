@@ -29,17 +29,6 @@
       "paint": {"background-color": "rgba(7, 15, 22, 1)"}
     },
     {
-      "id": "hillshade",
-      "type": "hillshade",
-      "source": "terrain",
-      "layout": {"visibility": "none"},
-      "paint": {
-        "hillshade-shadow-color": "rgba(162, 229, 194, 1)",
-        "hillshade-exaggeration": 0.5,
-        "hillshade-highlight-color": "rgba(238, 255, 231, 1)"
-      }
-    },
-    {
       "id": "water",
       "type": "fill",
       "source": "openmaptiles",
@@ -72,9 +61,9 @@
       ],
       "layout": {"visibility": "visible"},
       "paint": {
-        "line-color": "rgba(126, 154, 133, 1)",
-        "line-width": {"base": 1, "stops": [[8, 0], [16, 3], [20, 10]]},
-        "line-blur": 3
+        "line-color": "rgba(92, 112, 99, 1)",
+        "line-width": {"base": 1, "stops": [[8, 1], [13, 2], [24, 10]]},
+        "line-blur": 2
       }
     },
     {
@@ -103,7 +92,7 @@
       },
       "paint": {
         "line-color": "rgba(134, 134, 121, 1)",
-        "line-width": {"stops": [[13, 1], [24, 5]]},
+        "line-width": {"stops": [[13, 1], [16, 3], [24, 10]]},
         "line-dasharray": [0, 2],
         "line-blur": 2
       }
@@ -125,9 +114,11 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "#E1E1D5",
-        "line-width": {"stops": [[12, 1], [16, 3], [24, 15]]},
-        "line-blur": 3,
+        "line-color": "rgba(220, 220, 188, 1)",
+        "line-width": {
+          "stops": [[11, 0.5], [12, 1.5], [13, 2], [16, 6], [24, 15]]
+        },
+        "line-blur": 2.5,
         "line-dasharray": [0, 1.5]
       }
     },
@@ -148,12 +139,12 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "#D5E1DA",
+        "line-color": "rgba(220, 220, 188, 1)",
         "line-width": {
           "base": 2.2,
-          "stops": [[6, 1], [12, 3], [18, 10], [25, 40]]
+          "stops": [[6, 1.5], [13, 3], [16, 8], [24, 40]]
         },
-        "line-blur": 3
+        "line-blur": 2
       }
     },
     {
@@ -174,7 +165,10 @@
       },
       "paint": {
         "line-color": "rgba(247, 179, 110, 1)",
-        "line-width": {"base": 2.2, "stops": [[6, 2], [12, 4], [24, 80]]},
+        "line-width": {
+          "base": 2.2,
+          "stops": [[4, 1.5], [6, 2.5], [13, 5], [16, 12], [24, 60]]
+        },
         "line-blur": 2
       }
     }
