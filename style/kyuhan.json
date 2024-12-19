@@ -492,6 +492,6 @@
       }
     }
   ],
-  "localIdeographFontFamily": null,
+  "localIdeographFontFamily": false,
   "id": "kyuhan"
 }
