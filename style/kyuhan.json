@@ -1,0 +1,496 @@
+{
+  "version": 8,
+  "metadata": {"maputnik:renderer": "mlgljs"},
+  "sources": {
+    "openmaptiles": {
+      "type": "vector",
+      "tiles": ["https://tile.openstreetmap.jp/data/planet/{z}/{x}/{y}.pbf"],
+      "maxzoom": 14
+    },
+    "terrain": {
+      "type": "raster-dem",
+      "tiles": [
+        "https://gbank.gsj.jp/seamless/elev/terrainRGB/land/{z}/{y}/{x}.png"
+      ],
+      "minzoom": 0,
+      "maxzoom": 14,
+      "tileSize": 256,
+      "encoding": "mapbox",
+      "attribution": "<a href=\"https://maps.gsi.go.jp/development/ichiran.html\">地理院タイル</a> | <a href=\"https://gbank.gsj.jp/seamless/elev/\">産総研シームレス標高タイル</a>"
+    }
+  },
+  "glyphs": "https://chizutodesign.github.io/fonts/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "layout": {"visibility": "visible"},
+      "paint": {"background-color": "rgba(255, 255, 255, 1)"}
+    },
+    {
+      "id": "landcover-wood",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "landcover",
+      "filter": ["all", ["==", "class", "wood"]],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "fill-color": {"stops": [[6, "#fff"], [10, "rgba(204, 204, 204, 1)"]]},
+        "fill-antialias": false
+      }
+    },
+    {
+      "id": "water",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "water",
+      "filter": ["all", ["!=", "intermittent", 1]],
+      "layout": {"visibility": "visible"},
+      "paint": {"fill-color": "rgba(221, 221, 221, 1)"}
+    },
+    {
+      "id": "waterway-river",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "waterway",
+      "filter": ["any", ["==", "class", "river"], ["!=", "brunnel", "tunnel"]],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "line-color": "rgba(221, 221, 221, 1)",
+        "line-width": {"stops": [[11, 0.5], [20, 6]]}
+      }
+    },
+    {
+      "id": "border-pref",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "boundary",
+      "minzoom": 5,
+      "filter": ["all", ["in", "admin_level", 3, 4]],
+      "layout": {"line-cap": "round"},
+      "paint": {
+        "line-dasharray": [3, 3, 0, 3],
+        "line-width": {"stops": [[6, 1], [10, 2]]}
+      }
+    },
+    {
+      "id": "building",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "building",
+      "paint": {
+        "fill-color": "rgba(204, 204, 204, 1)",
+        "fill-opacity": {"stops": [[13, 0], [16, 1]]}
+      }
+    },
+    {
+      "id": "road-path-pedst",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 15,
+      "filter": ["all", ["in", "class", "footway", "path", "pedestrian"]],
+      "layout": {
+        "line-join": "round",
+        "line-cap": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(17, 17, 17, 1)",
+        "line-width": {"stops": [[15, 1], [18, 2]]},
+        "line-opacity": 1,
+        "line-dasharray": [1.5, 2]
+      }
+    },
+    {
+      "id": "road-minor-service",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 13,
+      "filter": [
+        "all",
+        ["in", "class", "minor", "service", "track", "raceway"],
+        ["!=", "brunnel", "tunnel"]
+      ],
+      "layout": {
+        "line-join": "round",
+        "line-cap": "butt",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#111",
+        "line-width": {"stops": [[14, 0.5], [18, 7]]},
+        "line-opacity": 1,
+        "line-dasharray": [1, 0.5]
+      }
+    },
+    {
+      "id": "road-secotertiary",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 12,
+      "filter": [
+        "all",
+        ["in", "class", "secondary", "tertiary"],
+        ["!=", "brunnel", "tunnel"]
+      ],
+      "layout": {
+        "line-join": "round",
+        "line-cap": "butt",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#111",
+        "line-width": {"stops": [[12, 0.5], [14, 1.5], [18, 10]]},
+        "line-opacity": 1,
+        "line-dasharray": [1, 0.5]
+      }
+    },
+    {
+      "id": "road-trunk-primary",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 8,
+      "filter": ["all", ["in", "class", "trunk", "primary"]],
+      "layout": {
+        "line-join": "round",
+        "line-cap": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(17, 17, 17, 1)",
+        "line-width": {"base": 2.2, "stops": [[10, 0.5], [13, 5], [18, 15]]},
+        "line-opacity": 1
+      }
+    },
+    {
+      "id": "road-motorway",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 0,
+      "filter": ["all", ["==", "class", "motorway"]],
+      "layout": {
+        "line-join": "round",
+        "line-cap": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(17, 17, 17, 1)",
+        "line-width": {
+          "base": 2.2,
+          "stops": [[4, 0.5], [8, 3], [13, 6], [18, 22]]
+        },
+        "line-blur": 0,
+        "line-opacity": 1
+      }
+    },
+    {
+      "id": "road-minor-service-ue",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 15,
+      "filter": [
+        "all",
+        ["in", "class", "minor", "service", "track", "raceway"],
+        ["!=", "brunnel", "tunnel"]
+      ],
+      "layout": {
+        "line-join": "round",
+        "line-cap": "butt",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#fff",
+        "line-width": {"stops": [[15, 0.5], [18, 5]]},
+        "line-opacity": 1
+      }
+    },
+    {
+      "id": "road-secotertiary-ue",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 14,
+      "filter": [
+        "all",
+        ["in", "class", "secondary", "tertiary"],
+        ["!=", "brunnel", "tunnel"]
+      ],
+      "layout": {
+        "line-join": "round",
+        "line-cap": "butt",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#fff",
+        "line-width": {"stops": [[14, 0.5], [18, 8]]},
+        "line-opacity": 1
+      }
+    },
+    {
+      "id": "road-trunk-primary-ue",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 11,
+      "filter": ["all", ["in", "class", "trunk", "primary"]],
+      "layout": {
+        "line-join": "round",
+        "line-cap": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255, 255, 255, 1)",
+        "line-width": {"base": 2.2, "stops": [[10, 0], [13, 3], [18, 14]]},
+        "line-opacity": 1
+      }
+    },
+    {
+      "id": "road-motorway-ue",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 7,
+      "filter": ["all", ["==", "class", "motorway"]],
+      "layout": {
+        "line-join": "round",
+        "line-cap": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255, 255, 255, 1)",
+        "line-width": {
+          "base": 2.2,
+          "stops": [[7, 0.5], [8, 1.5], [13, 4], [18, 20]]
+        },
+        "line-blur": 0,
+        "line-opacity": 1
+      }
+    },
+    {
+      "id": "rail",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 10,
+      "filter": ["all", ["in", "class", "rail", "transit"]],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "line-color": "rgba(17, 17, 17, 1)",
+        "line-width": {"stops": [[10, 2], [16, 3]]},
+        "line-opacity": 1
+      }
+    },
+    {
+      "id": "rail-ue",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 10,
+      "filter": ["all", ["in", "class", "rail", "transit"]],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "line-color": "rgba(255, 255, 255, 1)",
+        "line-width": {"stops": [[10, 1], [16, 2]]},
+        "line-opacity": 1,
+        "line-dasharray": [3, 3]
+      }
+    },
+    {
+      "id": "poi-sta",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "poi",
+      "minzoom": 13,
+      "filter": ["all", ["in", "class", "railway"]],
+      "layout": {
+        "text-font": ["Zen Old Mincho Medium"],
+        "text-field": ["coalesce", ["get", "name:ja_kana"]],
+        "text-size": 12,
+        "text-offset": [0, 0],
+        "visibility": "visible"
+      },
+      "paint": {
+        "icon-color": "rgba(35, 34, 32, 1)",
+        "text-color": "rgba(17, 17, 17, 1)",
+        "text-halo-color": "rgba(255, 255, 255, 1)",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "poi-street",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "minzoom": 14,
+      "filter": [
+        "all",
+        ["in", "class", "hamlet", "islet", "quarter", "island", "neighbourhood"]
+      ],
+      "layout": {
+        "text-font": ["Zen Old Mincho Medium"],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
+        "text-size": 12,
+        "visibility": "visible"
+      },
+      "paint": {
+        "text-color": "#111",
+        "text-halo-color": "#fff",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "poi-ward",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "minzoom": 12,
+      "filter": ["all", ["==", "class", "suburb"]],
+      "layout": {
+        "text-font": ["Zen Old Mincho Medium"],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
+        "text-size": 13,
+        "visibility": "visible"
+      },
+      "paint": {
+        "text-color": "rgba(17, 17, 17, 1)",
+        "text-halo-color": "rgba(255, 255, 255, 1)",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "poi-village",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "minzoom": 8,
+      "filter": ["all", ["==", "class", "village"]],
+      "layout": {
+        "text-font": ["Zen Old Mincho Medium"],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
+        "text-size": 13,
+        "visibility": "visible",
+        "text-letter-spacing": 0.25
+      },
+      "paint": {
+        "text-color": "rgba(17, 17, 17, 1)",
+        "text-halo-color": "rgba(255, 255, 255, 1)",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "poi-town",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "minzoom": 7,
+      "filter": ["all", ["==", "class", "town"]],
+      "layout": {
+        "text-font": ["Zen Old Mincho Medium"],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
+        "text-size": 14,
+        "visibility": "visible",
+        "text-letter-spacing": 0.25,
+        "text-offset": {"stops": [[10, [0, 0]], [11, [0, -0.9]]]}
+      },
+      "paint": {
+        "icon-color": "rgba(35, 34, 32, 1)",
+        "text-color": "#111",
+        "text-halo-color": "#fff",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "poi-city",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "minzoom": 6,
+      "maxzoom": 15,
+      "filter": ["all", ["==", "class", "city"]],
+      "layout": {
+        "text-font": ["Zen Old Mincho Medium"],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
+        "text-size": 15,
+        "visibility": "visible",
+        "text-letter-spacing": 0.25
+      },
+      "paint": {
+        "icon-color": "rgba(35, 34, 32, 1)",
+        "text-halo-width": 2,
+        "text-halo-color": "rgba(255, 255, 255, 1)"
+      }
+    },
+    {
+      "id": "poi-pref",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "minzoom": 4,
+      "maxzoom": 10,
+      "filter": ["all", ["in", "class", "province", "state"]],
+      "layout": {
+        "text-font": ["Zen Old Mincho Medium"],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
+        "text-size": {"stops": [[4, 12], [12, 20]]},
+        "visibility": "visible",
+        "text-letter-spacing": 0.25
+      },
+      "paint": {
+        "text-color": "#111",
+        "text-halo-color": "#fff",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "poi-capital",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "maxzoom": 10,
+      "filter": ["all", ["==", "capital", 2]],
+      "layout": {
+        "text-font": ["Zen Old Mincho Medium"],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
+        "text-size": {
+          "property": "",
+          "type": "exponential",
+          "stops": [
+            [{"value": 0, "zoom": 4}, 16],
+            [{"value": 0, "zoom": 12}, 20]
+          ]
+        },
+        "visibility": "visible",
+        "text-letter-spacing": 0.25
+      },
+      "paint": {
+        "icon-color": "rgba(35, 34, 32, 1)",
+        "text-color": "rgba(17, 17, 17, 1)",
+        "text-halo-color": "rgba(255, 255, 255, 1)",
+        "text-halo-width": 1.5
+      }
+    },
+    {
+      "id": "circle-town",
+      "type": "circle",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "minzoom": 11,
+      "filter": ["all", ["==", "class", "town"]],
+      "paint": {
+        "circle-color": "#fff",
+        "circle-opacity": 1,
+        "circle-stroke-color": "#111",
+        "circle-stroke-opacity": 1,
+        "circle-stroke-width": 1.5,
+        "circle-radius": 3
+      }
+    }
+  ],
+  "id": "kyuhan"
+}
