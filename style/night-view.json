@@ -5,6 +5,7 @@
     "openmaptiles": {
       "type": "vector",
       "tiles": ["https://tile.openstreetmap.jp/data/planet/{z}/{x}/{y}.pbf"],
+      "attribution": "© <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">OpenStreetMap contributors</a>",
       "maxzoom": 14
     },
     "terrain": {
