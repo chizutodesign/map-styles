@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Map with Attribution and Geolocation</title>
+  <title>Map with Style Hash</title>
   <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
   <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet">
   <style>
@@ -45,24 +45,27 @@
   <div id="map"></div>
 
   <script>
+    // デフォルトスタイル
+    const styles = {
+      "night-view": "https://chizutodesign.github.io/map-styles/style/night-view.json",
+      "inozu": "https://chizutodesign.github.io/map-styles/style/inozu.json"
+    };
+
+    // 現在のハッシュ値を取得（デフォルトはnight-view）
+    const currentHash = window.location.hash.substring(1) || "night-view";
+
     // MapLibreのマップを初期化
     const map = new maplibregl.Map({
       container: 'map', // マップを表示するdivのID
-      style: 'https://chizutodesign.github.io/map-styles/style/night-view.json', // 初期スタイル
+      style: styles[currentHash], // ハッシュに基づいたスタイル
       center: [139.6917, 35.6895], // 東京の座標
       zoom: 10,
       minZoom: 4, // 最小ズーム
-      maxZoom: 20, // 最大ズーム
-      attributionControl: false // デフォルトのコピーライト表示を無効化
+      maxZoom: 20 // 最大ズーム
     });
 
     // ナビゲーションコントロールを右上に追加
     map.addControl(new maplibregl.NavigationControl(), 'top-right');
-
-    // デフォルトの丸い「i」形式のコピーライト表示を右下に追加
-    map.addControl(new maplibregl.AttributionControl({
-      compact: true // 丸い「i」ボタン形式で表示
-    }), 'bottom-right');
 
     // 現在地ボタンを右上に追加
     const geolocateControl = new maplibregl.GeolocateControl({
@@ -75,18 +78,15 @@
 
     map.addControl(geolocateControl, 'top-right');
 
-    // 現在地ボタンがクリックされたときのログ（任意）
-    geolocateControl.on('geolocate', (position) => {
-      console.log('現在地:', position.coords.latitude, position.coords.longitude);
-    });
-
     // スタイル切り替えボタンの動作
     document.getElementById('night-view').addEventListener('click', () => {
-      map.setStyle('https://chizutodesign.github.io/map-styles/style/night-view.json');
+      map.setStyle(styles["night-view"]); // スタイルを設定
+      window.location.hash = "night-view"; // URLの末尾に#night-viewを設定
     });
 
     document.getElementById('inozu').addEventListener('click', () => {
-      map.setStyle('https://chizutodesign.github.io/map-styles/style/inozu.json');
+      map.setStyle(styles["inozu"]); // スタイルを設定
+      window.location.hash = "inozu"; // URLの末尾に#inozuを設定
     });
   </script>
 </body>
