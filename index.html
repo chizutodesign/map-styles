@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MapLibre with Default Controls</title>
+  <title>MapLibre with OSM Attribution</title>
   <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
   <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet">
   <style>
@@ -50,7 +50,8 @@
       container: 'map', // マップを表示するdivのID
       style: 'https://chizutodesign.github.io/map-styles/style/night-view.json', // 初期スタイル
       center: [139.6917, 35.6895], // 東京の座標
-      zoom: 10
+      zoom: 10,
+      attributionControl: false // デフォルトのアトリビューションを無効化
     });
 
     // 拡大縮小ボタンを右上に追加
@@ -59,9 +60,9 @@
     });
     map.addControl(navControl, 'top-right');
 
-    // デフォルトのOSM脚注を右下に表示
+    // デフォルトのOSM脚注を右下に追加
     const attributionControl = new maplibregl.AttributionControl({
-      compact: true // 表示をコンパクトにする
+      compact: true // コンパクトな表示にする
     });
     map.addControl(attributionControl, 'bottom-right');
 
