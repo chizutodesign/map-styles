@@ -1,0 +1,177 @@
+{
+  "version": 8,
+  "metadata": {"maputnik:renderer": "mlgljs"},
+  "sources": {
+    "openmaptiles": {
+      "type": "vector",
+      "tiles": ["https://tile.openstreetmap.jp/data/planet/{z}/{x}/{y}.pbf"],
+      "maxzoom": 14
+    },
+    "terrain": {
+      "type": "raster-dem",
+      "tiles": [
+        "https://gbank.gsj.jp/seamless/elev/terrainRGB/land/{z}/{y}/{x}.png"
+      ],
+      "minzoom": 0,
+      "maxzoom": 14,
+      "tileSize": 256,
+      "encoding": "mapbox",
+      "attribution": "<a href=\"https://maps.gsi.go.jp/development/ichiran.html\">地理院タイル</a> | <a href=\"https://gbank.gsj.jp/seamless/elev/\">産総研シームレス標高タイル</a>"
+    }
+  },
+  "sprite": "https://mierune.github.io/openmaptiles-data/sprite",
+  "glyphs": "https://mierune.github.io/fonts/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "layout": {"visibility": "visible"},
+      "paint": {"background-color": "rgba(7, 15, 22, 1)"}
+    },
+    {
+      "id": "water",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "water",
+      "filter": ["all", ["!=", "intermittent", 1]],
+      "layout": {"visibility": "visible"},
+      "paint": {"fill-color": "rgba(0, 0, 0, 1)"}
+    },
+    {
+      "id": "waterway-river",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "waterway",
+      "filter": ["any", ["==", "class", "river"], ["!=", "brunnel", "tunnel"]],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "line-color": "rgba(0, 0, 0, 1)",
+        "line-width": {"stops": [[11, 0.5], [20, 6]]}
+      }
+    },
+    {
+      "id": "rail",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "filter": [
+        "all",
+        ["in", "class", "rail", "transit"],
+        ["!=", "brunnel", "tunnel"]
+      ],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "line-color": "rgba(92, 112, 99, 1)",
+        "line-width": {"base": 1, "stops": [[8, 1], [13, 2], [24, 10]]},
+        "line-blur": 2
+      }
+    },
+    {
+      "id": "road-path-pedst",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 0,
+      "filter": [
+        "all",
+        [
+          "in",
+          "class",
+          "footway",
+          "path",
+          "pedestrian",
+          "service",
+          "track",
+          "raceway"
+        ]
+      ],
+      "layout": {
+        "line-join": "round",
+        "line-cap": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(134, 134, 121, 1)",
+        "line-width": {"stops": [[13, 1], [16, 3], [24, 10]]},
+        "line-dasharray": [0, 2],
+        "line-blur": 2
+      }
+    },
+    {
+      "id": "road-secotertiary",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 0,
+      "filter": [
+        "all",
+        ["in", "class", "secondary", "tertiary", "minor"],
+        ["!=", "brunnel", "tunnel"]
+      ],
+      "layout": {
+        "line-join": "round",
+        "line-cap": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(220, 220, 188, 1)",
+        "line-width": {
+          "stops": [[11, 0.5], [12, 1.5], [13, 2], [16, 6], [24, 15]]
+        },
+        "line-blur": 2.5,
+        "line-dasharray": [0, 1.5]
+      }
+    },
+    {
+      "id": "road-trunk-primary",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 0,
+      "filter": [
+        "all",
+        ["in", "class", "trunk", "primary"],
+        ["!=", "brunnel", "tunnel"]
+      ],
+      "layout": {
+        "line-join": "round",
+        "line-cap": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(220, 220, 188, 1)",
+        "line-width": {
+          "base": 2.2,
+          "stops": [[6, 1.5], [13, 3], [16, 8], [24, 40]]
+        },
+        "line-blur": 2
+      }
+    },
+    {
+      "id": "road-motorway",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 0,
+      "filter": [
+        "all",
+        ["==", "class", "motorway"],
+        ["!=", "brunnel", "tunnel"]
+      ],
+      "layout": {
+        "line-join": "round",
+        "line-cap": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(247, 179, 110, 1)",
+        "line-width": {
+          "base": 2.2,
+          "stops": [[4, 1.5], [6, 2.5], [13, 5], [16, 12], [24, 60]]
+        },
+        "line-blur": 2
+      }
+    }
+  ],
+  "id": "illuminate"
+}
