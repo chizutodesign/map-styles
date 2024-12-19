@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Map with Geolocation and Style Switch</title>
+  <title>Map with Attribution and Geolocation</title>
   <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
   <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet">
   <style>
@@ -52,11 +52,17 @@
       center: [139.6917, 35.6895], // 東京の座標
       zoom: 10,
       minZoom: 4, // 最小ズーム
-      maxZoom: 20 // 最大ズーム
+      maxZoom: 20, // 最大ズーム
+      attributionControl: false // デフォルトのコピーライト表示を無効化
     });
 
     // ナビゲーションコントロールを右上に追加
     map.addControl(new maplibregl.NavigationControl(), 'top-right');
+
+    // デフォルトの丸い「i」形式のコピーライト表示を右下に追加
+    map.addControl(new maplibregl.AttributionControl({
+      compact: true // 丸い「i」ボタン形式で表示
+    }), 'bottom-right');
 
     // 現在地ボタンを右上に追加
     const geolocateControl = new maplibregl.GeolocateControl({
