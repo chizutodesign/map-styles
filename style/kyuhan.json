@@ -28,7 +28,7 @@
       "source": "openmaptiles",
       "source-layer": "landcover",
       "filter": ["all", ["==", "class", "wood"]],
-      "layout": {"visibility": "visible"},
+      "layout": {"visibility": "none"},
       "paint": {
         "fill-color": {"stops": [[6, "#fff"], [10, "rgba(238, 238, 238, 1)"]]},
         "fill-antialias": false
@@ -60,11 +60,7 @@
       "source-layer": "water",
       "filter": ["all", ["!=", "intermittent", 1]],
       "layout": {"visibility": "visible"},
-      "paint": {
-        "fill-color": "rgba(221, 221, 221, 1)",
-        "fill-outline-color": "rgba(0, 0, 0, 1)",
-        "fill-antialias": true
-      }
+      "paint": {"fill-color": "rgba(221, 221, 221, 1)", "fill-antialias": false}
     },
     {
       "id": "waterway-river",
@@ -296,6 +292,35 @@
       }
     },
     {
+      "id": "rail-subway",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 10,
+      "filter": ["all", ["in", "subclass", "subway", "tram", "light_rail"]],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "line-color": "rgba(17, 17, 17, 1)",
+        "line-width": {"stops": [[14, 0.5], [16, 2]]},
+        "line-opacity": 1
+      }
+    },
+    {
+      "id": "rail-subway-dash",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "minzoom": 10,
+      "filter": ["all", ["in", "subclass", "subway", "tram", "light_rail"]],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "line-color": "rgba(17, 17, 17, 1)",
+        "line-width": {"stops": [[14, 2], [16, 5]]},
+        "line-opacity": 1,
+        "line-dasharray": [0.2, 2]
+      }
+    },
+    {
       "id": "rail",
       "type": "line",
       "source": "openmaptiles",
@@ -304,7 +329,8 @@
       "filter": [
         "all",
         ["in", "class", "rail", "transit"],
-        ["!=", "service", "yard"]
+        ["!=", "service", "yard"],
+        ["!in", "subclass", "subway", "tram", "light_rail"]
       ],
       "layout": {"visibility": "visible"},
       "paint": {
@@ -322,7 +348,8 @@
       "filter": [
         "all",
         ["in", "class", "rail", "transit"],
-        ["!=", "service", "yard"]
+        ["!=", "service", "yard"],
+        ["!in", "subclass", "subway", "tram", "light_rail"]
       ],
       "layout": {"visibility": "visible"},
       "paint": {
@@ -333,7 +360,94 @@
       }
     },
     {
-      "id": "poi-street",
+      "id": "text-road",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "transportation_name",
+      "minzoom": 13,
+      "filter": ["all"],
+      "layout": {
+        "text-font": ["Zen Old Mincho Medium"],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
+        "symbol-placement": "line",
+        "symbol-spacing": 350,
+        "text-size": 11,
+        "visibility": "visible",
+        "text-letter-spacing": 0.5,
+        "text-rotate": 0,
+        "text-transform": "none"
+      },
+      "paint": {
+        "text-color": "rgba(17, 17, 17, 1)",
+        "text-halo-color": "#ffffff",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "poi-school",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "poi",
+      "minzoom": 14,
+      "filter": ["all", ["in", "class", "shool", "college"]],
+      "layout": {
+        "text-font": ["Zen Old Mincho Medium"],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
+        "text-size": 12,
+        "visibility": "visible",
+        "text-writing-mode": ["vertical"],
+        "text-letter-spacing": 0.1
+      },
+      "paint": {
+        "text-color": "#111",
+        "text-halo-color": "#fff",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "poi-temple-shrine",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "poi",
+      "minzoom": 14,
+      "filter": ["all", ["in", "class", "place_of_worship"]],
+      "layout": {
+        "text-font": ["Zen Old Mincho Medium"],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
+        "text-size": 12,
+        "visibility": "visible",
+        "text-writing-mode": ["vertical"],
+        "text-letter-spacing": 0.1
+      },
+      "paint": {
+        "text-color": "#111",
+        "text-halo-color": "#fff",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "poi-park",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "poi",
+      "minzoom": 14,
+      "filter": ["all", ["in", "class", "park"]],
+      "layout": {
+        "text-font": ["Zen Old Mincho Medium"],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
+        "text-size": 12,
+        "visibility": "visible",
+        "text-writing-mode": ["vertical"],
+        "text-letter-spacing": 0.1
+      },
+      "paint": {
+        "text-color": "#111",
+        "text-halo-color": "#fff",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "name-street",
       "type": "symbol",
       "source": "openmaptiles",
       "source-layer": "place",
@@ -343,23 +457,19 @@
         ["in", "class", "hamlet", "islet", "quarter", "island", "neighbourhood"]
       ],
       "layout": {
-        "text-font": ["Zen Old Mincho Medium"],
-        "text-field": [
-          "concat",
-          "\u202E",
-          ["coalesce", ["get", "name:ja"], ["get", "name"]]
-        ],
-        "text-size": {"stops": [[12, 12], [16, 18]]},
+        "text-font": ["Zen Kaku Gothic Antique Medium"],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
+        "text-size": {"stops": [[12, 12], [16, 16]]},
         "visibility": "visible"
       },
       "paint": {
         "text-color": "#111",
         "text-halo-color": "#fff",
-        "text-halo-width": 3
+        "text-halo-width": 2
       }
     },
     {
-      "id": "poi-sta",
+      "id": "name-sta",
       "type": "symbol",
       "source": "openmaptiles",
       "source-layer": "poi",
@@ -367,8 +477,8 @@
       "filter": ["all", ["in", "class", "railway"]],
       "layout": {
         "text-font": ["Zen Kaku Gothic Antique Medium"],
-        "text-field": ["concat", "\u202E", ["coalesce", ["get", "name:ja_kana"]]],
-        "text-size": {"stops": [[12, 10], [16, 18]]},
+        "text-field": ["get", "name:ja_kana"],
+        "text-size": {"stops": [[12, 10], [16, 14]]},
         "text-offset": [0, 0],
         "visibility": "visible"
       },
@@ -376,11 +486,11 @@
         "icon-color": "rgba(35, 34, 32, 1)",
         "text-color": "rgba(17, 17, 17, 1)",
         "text-halo-color": "rgba(255, 255, 255, 1)",
-        "text-halo-width": 3
+        "text-halo-width": 2
       }
     },
     {
-      "id": "poi-ward",
+      "id": "name-ward",
       "type": "symbol",
       "source": "openmaptiles",
       "source-layer": "place",
@@ -388,11 +498,7 @@
       "filter": ["all", ["==", "class", "suburb"]],
       "layout": {
         "text-font": ["Zen Old Mincho Medium"],
-        "text-field": [
-          "concat",
-          "\u202E",
-          ["coalesce", ["get", "name:ja"], ["get", "name"]]
-        ],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
         "text-size": {"stops": [[12, 13], [16, 20]]},
         "visibility": "visible",
         "text-letter-spacing": 0.25
@@ -404,7 +510,7 @@
       }
     },
     {
-      "id": "poi-village",
+      "id": "name-village",
       "type": "symbol",
       "source": "openmaptiles",
       "source-layer": "place",
@@ -413,11 +519,7 @@
       "filter": ["all", ["==", "class", "village"]],
       "layout": {
         "text-font": ["Zen Old Mincho Medium"],
-        "text-field": [
-          "concat",
-          "\u202E",
-          ["coalesce", ["get", "name:ja"], ["get", "name"]]
-        ],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
         "text-size": {"stops": [[12, 13], [16, 20]]},
         "visibility": "visible",
         "text-letter-spacing": 0.25
@@ -429,7 +531,7 @@
       }
     },
     {
-      "id": "poi-town",
+      "id": "name-town",
       "type": "symbol",
       "source": "openmaptiles",
       "source-layer": "place",
@@ -438,11 +540,7 @@
       "filter": ["all", ["==", "class", "town"]],
       "layout": {
         "text-font": ["Zen Old Mincho Medium"],
-        "text-field": [
-          "concat",
-          "\u202E",
-          ["coalesce", ["get", "name:ja"], ["get", "name"]]
-        ],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
         "text-size": {"stops": [[12, 14], [16, 22]]},
         "visibility": "visible",
         "text-letter-spacing": {"stops": [[11, 0.25], [12, 1]]},
@@ -456,7 +554,7 @@
       }
     },
     {
-      "id": "poi-city",
+      "id": "name-city",
       "type": "symbol",
       "source": "openmaptiles",
       "source-layer": "place",
@@ -465,14 +563,12 @@
       "filter": ["all", ["==", "class", "city"]],
       "layout": {
         "text-font": ["Zen Old Mincho Medium"],
-        "text-field": [
-          "concat",
-          "\u202E",
-          ["coalesce", ["get", "name:ja"], ["get", "name"]]
-        ],
-        "text-size": {"stops": [[12, 15], [16, 24]]},
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
+        "text-size": {"stops": [[8, 15], [12, 18], [16, 24]]},
         "visibility": "visible",
-        "text-letter-spacing": {"stops": [[11, 0.25], [12, 1]]}
+        "text-letter-spacing": {"stops": [[11, 0.25], [12, 1]]},
+        "text-writing-mode": ["horizontal"],
+        "text-offset": [0, -0.9]
       },
       "paint": {
         "icon-color": "rgba(35, 34, 32, 1)",
@@ -481,7 +577,7 @@
       }
     },
     {
-      "id": "poi-pref",
+      "id": "name-pref",
       "type": "symbol",
       "source": "openmaptiles",
       "source-layer": "place",
@@ -489,12 +585,8 @@
       "maxzoom": 12,
       "filter": ["all", ["in", "class", "province", "state"]],
       "layout": {
-        "text-font": ["Zen Old Mincho Medium"],
-        "text-field": [
-          "concat",
-          "\u202E",
-          ["coalesce", ["get", "name:ja"], ["get", "name"]]
-        ],
+        "text-font": ["Zen Kaku Gothic Antique Medium"],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
         "text-size": {"stops": [[4, 12], [8, 24], [14, 40]]},
         "visibility": "visible",
         "text-letter-spacing": {"stops": [[6, 0.25], [10, 1]]}
@@ -506,19 +598,15 @@
       }
     },
     {
-      "id": "poi-capital",
+      "id": "name-capital",
       "type": "symbol",
       "source": "openmaptiles",
       "source-layer": "place",
       "maxzoom": 10,
       "filter": ["all", ["==", "capital", 2]],
       "layout": {
-        "text-font": ["Zen Old Mincho Medium"],
-        "text-field": [
-          "concat",
-          "\u202E",
-          ["coalesce", ["get", "name:ja"], ["get", "name"]]
-        ],
+        "text-font": ["Zen Kaku Gothic Antique Medium"],
+        "text-field": ["coalesce", ["get", "name:ja"], ["get", "name"]],
         "text-size": {"stops": [[4, 16], [8, 24], [14, 40]]},
         "visibility": "visible",
         "text-letter-spacing": {"stops": [[6, 0.25], [10, 1]]}
@@ -536,41 +624,14 @@
       "source-layer": "place",
       "minzoom": 11,
       "maxzoom": 15,
-      "filter": ["all", ["==", "class", "town"]],
+      "filter": ["all", ["in", "class", "town"]],
       "paint": {
         "circle-color": "#fff",
         "circle-opacity": 1,
         "circle-stroke-color": "#111",
         "circle-stroke-opacity": 1,
-        "circle-stroke-width": 1.5,
+        "circle-stroke-width": 1.2,
         "circle-radius": 3
-      }
-    },
-    {
-      "id": "text-road",
-      "type": "symbol",
-      "source": "openmaptiles",
-      "source-layer": "transportation_name",
-      "filter": ["all"],
-      "layout": {
-        "text-font": ["Zen Old Mincho Medium"],
-        "text-field": [
-          "concat",
-          "\u202E",
-          ["coalesce", ["get", "name:ja"], ["get", "name"]]
-        ],
-        "symbol-placement": "line",
-        "symbol-spacing": 350,
-        "text-size": 10,
-        "visibility": "none",
-        "text-letter-spacing": 1,
-        "text-rotate": 0,
-        "text-transform": "none"
-      },
-      "paint": {
-        "text-color": "rgba(17, 17, 17, 1)",
-        "text-halo-color": "#ffffff",
-        "text-halo-width": 2
       }
     }
   ],
