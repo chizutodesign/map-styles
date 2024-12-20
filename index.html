@@ -7,14 +7,24 @@
   <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
   <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-    #map {
-      width: 100%;
-      height: 100vh;
-    }
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* bodyを全高に設定 */
+  overflow: hidden; /* スクロールを防止 */
+}
+
+#map {
+  width: 100%;
+  height: 100%; /* デフォルトとして100%を指定 */
+}
+
+/* スマホ対応: ビュー高さを正確に指定 */
+@media (max-width: 768px) {
+  #map {
+    height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+}
     .button-container {
       position: absolute;
       top: 10px;
