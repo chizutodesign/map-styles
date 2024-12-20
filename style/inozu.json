@@ -29,17 +29,36 @@
       "paint": {"background-color": "rgba(237, 230, 222, 1)"}
     },
     {
+      "id": "coastline",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "water",
+      "filter": ["all"],
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "visibility": "none"
+      },
+      "paint": {
+        "line-width": 20,
+        "line-color": "rgba(71, 162, 203, 1)",
+        "line-blur": 300,
+        "line-translate-anchor": "map",
+        "line-gap-width": 1
+      }
+    },
+    {
       "id": "landcover-wood",
       "type": "fill",
       "source": "openmaptiles",
       "source-layer": "landcover",
-      "filter": ["all", ["==", "class", "wood"]],
+      "filter": ["all", ["in", "class", "wood", "grass", "park"]],
       "layout": {"visibility": "visible"},
       "paint": {
         "fill-color": {
           "stops": [
             [6, "rgba(237, 230, 222, 1)"],
-            [10, "rgba(190, 206, 140, 1)"]
+            [14, "rgba(187, 208, 144, 1)"]
           ]
         },
         "fill-antialias": false
@@ -52,7 +71,11 @@
       "source-layer": "water",
       "filter": ["all", ["!=", "intermittent", 1]],
       "layout": {"visibility": "visible"},
-      "paint": {"fill-color": "rgba(102, 170, 204, 1)"}
+      "paint": {
+        "fill-color": "rgba(92, 175, 214, 1)",
+        "fill-antialias": false,
+        "fill-opacity": {"stops": [[4, 0.5], [10, 1]]}
+      }
     },
     {
       "id": "waterway-river",
@@ -332,7 +355,11 @@
         "text-offset": [0, 0],
         "text-writing-mode": ["vertical"]
       },
-      "paint": {"icon-color": "rgba(35, 34, 32, 1)"}
+      "paint": {
+        "icon-color": "rgba(35, 34, 32, 1)",
+        "text-halo-width": 10,
+        "text-halo-color": "rgba(237, 230, 222, 1)"
+      }
     },
     {
       "id": "poi-capital",
@@ -350,7 +377,11 @@
         "text-anchor": "center",
         "text-writing-mode": ["vertical"]
       },
-      "paint": {"icon-color": "rgba(35, 34, 32, 1)"}
+      "paint": {
+        "icon-color": "rgba(35, 34, 32, 1)",
+        "text-halo-color": "rgba(237, 230, 222, 1)",
+        "text-halo-width": 10
+      }
     }
   ],
   "localIdeographFontFamily": false,
