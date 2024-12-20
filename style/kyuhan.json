@@ -346,7 +346,7 @@
         "text-font": ["Zen Old Mincho Medium"],
         "text-field": [
           "concat",
-          "‮",
+          "\u202E",
           ["coalesce", ["get", "name:ja"], ["get", "name"]]
         ],
         "text-size": {"stops": [[12, 12], [16, 18]]},
@@ -367,7 +367,7 @@
       "filter": ["all", ["in", "class", "railway"]],
       "layout": {
         "text-font": ["Zen Kaku Gothic Antique Medium"],
-        "text-field": ["concat", "‮", ["coalesce", ["get", "name:ja_kana"]]],
+        "text-field": ["concat", "\u202E", ["coalesce", ["get", "name:ja_kana"]]],
         "text-size": {"stops": [[12, 10], [16, 18]]},
         "text-offset": [0, 0],
         "visibility": "visible"
@@ -390,7 +390,7 @@
         "text-font": ["Zen Old Mincho Medium"],
         "text-field": [
           "concat",
-          "‮",
+          "\u202E",
           ["coalesce", ["get", "name:ja"], ["get", "name"]]
         ],
         "text-size": {"stops": [[12, 13], [16, 20]]},
@@ -415,7 +415,7 @@
         "text-font": ["Zen Old Mincho Medium"],
         "text-field": [
           "concat",
-          "‮",
+          "\u202E",
           ["coalesce", ["get", "name:ja"], ["get", "name"]]
         ],
         "text-size": {"stops": [[12, 13], [16, 20]]},
@@ -440,7 +440,7 @@
         "text-font": ["Zen Old Mincho Medium"],
         "text-field": [
           "concat",
-          "‮",
+          "\u202E",
           ["coalesce", ["get", "name:ja"], ["get", "name"]]
         ],
         "text-size": {"stops": [[12, 14], [16, 22]]},
@@ -467,7 +467,7 @@
         "text-font": ["Zen Old Mincho Medium"],
         "text-field": [
           "concat",
-          "‮",
+          "\u202E",
           ["coalesce", ["get", "name:ja"], ["get", "name"]]
         ],
         "text-size": {"stops": [[12, 15], [16, 24]]},
@@ -492,7 +492,7 @@
         "text-font": ["Zen Old Mincho Medium"],
         "text-field": [
           "concat",
-          "‮",
+          "\u202E",
           ["coalesce", ["get", "name:ja"], ["get", "name"]]
         ],
         "text-size": {"stops": [[4, 12], [8, 24], [14, 40]]},
@@ -516,7 +516,7 @@
         "text-font": ["Zen Old Mincho Medium"],
         "text-field": [
           "concat",
-          "‮",
+          "\u202E",
           ["coalesce", ["get", "name:ja"], ["get", "name"]]
         ],
         "text-size": {"stops": [[4, 16], [8, 24], [14, 40]]},
@@ -556,7 +556,7 @@
         "text-font": ["Zen Old Mincho Medium"],
         "text-field": [
           "concat",
-          "‮",
+          "\u202E",
           ["coalesce", ["get", "name:ja"], ["get", "name"]]
         ],
         "symbol-placement": "line",
