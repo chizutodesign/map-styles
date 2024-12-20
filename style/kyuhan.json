@@ -516,7 +516,7 @@
         "text-font": ["Zen Old Mincho Medium"],
         "text-field": [
           "concat",
-          "‮",
+          "\u202E",
           ["coalesce", ["get", "name:ja"], ["get", "name"]]
         ],
         "text-size": {"stops": [[4, 16], [8, 24], [14, 40]]},
