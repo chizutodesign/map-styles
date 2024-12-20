@@ -1,86 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>地図スタイル</title>
   <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
-  <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+  <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet">
   <style>
-    body { margin: 0; padding: 0; }
-    #map { width: 100%; height: 100vh; }
-    .style-switcher {
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    #map {
+      width: 100%;
+      height: 100vh;
+    }
+    .button-container {
       position: absolute;
       top: 10px;
       left: 10px;
       z-index: 1;
-      background: white;
-      padding: 5px;
-      border-radius: 3px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      display: flex;
+      gap: 10px;
     }
-    .style-switcher button {
-      margin: 2px;
-      padding: 5px 10px;
+    button {
+      padding: 10px 15px;
+      border: none;
+      background-color: #007AFF;
+      color: white;
       cursor: pointer;
+      font-size: 14px;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #005BB5;
     }
   </style>
 </head>
 <body>
-  <div id="map"></div>
-  <div class="style-switcher">
-    <button data-style="kyuhan">Kyuhan</button>
-    <button data-style="inozu">Inozu</button>
+  <div class="button-container">
+    <button id="night-view">夜景</button>
+    <button id="inozu">伊能図</button>
+    <button id="kyuhan">旧版地図</button>
   </div>
+  <div id="map"></div>
+
   <script>
+    // スタイルの定義
     const styles = {
-      kyuhan: 'https://chizutodesign.github.io/map-styles/style/kyuhan.json',
-      inozu: 'https://chizutodesign.github.io/map-styles/style/inozu.json'
+      "night-view": "https://chizutodesign.github.io/map-styles/style/night-view.json",
+      "inozu": "https://chizutodesign.github.io/map-styles/style/inozu.json",
+      "kyuhan": "https://chizutodesign.github.io/map-styles/style/kyuhan.json"
     };
 
-    // URLのハッシュ値を取得
-    const hash = window.location.hash.substring(1);
+    // 現在のハッシュ値を取得（デフォルトはnight-view）
+    const currentHash = window.location.hash.substring(1) || "night-view";
 
-    // 初期スタイルをハッシュ値から決定（デフォルト: kyuhan）
-    const initialStyle = styles[hash] || styles.kyuhan;
-
+    // MapLibreのマップを初期化
     const map = new maplibregl.Map({
-      container: 'map',
-      style: initialStyle,
-      center: [140.0, 36.0], // 初期中心座標
-      zoom: 8
+      container: 'map', // マップを表示するdivのID
+      style: styles[currentHash], // ハッシュに基づいたスタイル
+      center: [139.6917, 35.6895], // 東京の座標
+      zoom: 10,
+      minZoom: 4, // 最小ズーム
+      maxZoom: 20, // 最大ズーム
+      localIdeographFontFamily: false
     });
 
-    // 文字列を反転する関数
-    function reverseText(text) {
-      return text.split('').reverse().join('');
-    }
+    // ナビゲーションコントロールを右上に追加
+    map.addControl(new maplibregl.NavigationControl(), 'top-right');
 
-    // #kyuhanの場合のみ文字を反転
-    if (hash === 'kyuhan') {
-      map.on('styledata', () => {
-        const layerId = 'label-layer'; // 適切なレイヤーIDに変更
-        const sourceId = 'source-id'; // 適切なデータソースIDに変更
+    // 現在地ボタンを右上に追加
+    const geolocateControl = new maplibregl.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true // 高精度位置情報を有効化
+      },
+      trackUserLocation: true, // ユーザーの位置を追跡
+      showAccuracyCircle: true // 精度を示す円を表示
+    });
 
-        // レイヤーのテキストフィールドを反転
-        map.setLayoutProperty(layerId, 'text-field', [
-          'concat',
-          ['literal', ''],
-          ['map', ['get', 'name'], ['literal', reverseText]]
-        ]);
-      });
-    }
+    map.addControl(geolocateControl, 'top-right');
 
-    // スタイル切り替えボタン
-    document.querySelector('.style-switcher').addEventListener('click', (e) => {
-      if (e.target.tagName === 'BUTTON') {
-        const styleName = e.target.getAttribute('data-style');
-        const styleUrl = styles[styleName];
+    // 現在地ボタンがクリックされたときのログ（任意）
+    geolocateControl.on('geolocate', (position) => {
+      console.log('現在地:', position.coords.latitude, position.coords.longitude);
+    });
 
-        if (styleUrl) {
-          map.setStyle(styleUrl);
-          window.location.hash = styleName; // URLハッシュ値を変更
-        }
-      }
+    // スタイル切り替えボタンの動作
+    document.getElementById('night-view').addEventListener('click', () => {
+      map.setStyle(styles["night-view"]); // スタイルを設定
+      window.location.hash = "night-view"; // URLの末尾に#night-viewを設定
+    });
+
+    document.getElementById('inozu').addEventListener('click', () => {
+      map.setStyle(styles["inozu"]); // スタイルを設定
+      window.location.hash = "inozu"; // URLの末尾に#inozuを設定
+    });
+
+    document.getElementById('kyuhan').addEventListener('click', () => {
+      map.setStyle(styles["kyuhan"]); // スタイルを設定
+      window.location.hash = "kyuhan"; // URLの末尾に#kyuhanを設定
     });
   </script>
 </body>
