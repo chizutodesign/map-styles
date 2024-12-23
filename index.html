@@ -53,15 +53,22 @@
       "kyuhan": "https://chizutodesign.github.io/map-styles/style/kyuhan.json"
     };
 
-    // 現在のハッシュ値を取得（デフォルトはnight-view）
-    const currentHash = window.location.hash.substring(1) || "night-view";
+    // URLクエリパラメータから地図状態を取得
+    const urlParams = new URLSearchParams(window.location.search);
+    const lat = parseFloat(urlParams.get('lat')) || 35.6895; // デフォルトは東京
+    const lng = parseFloat(urlParams.get('lng')) || 139.6917;
+    const zoom = parseFloat(urlParams.get('zoom')) || 8;
+
+    // 現在のハッシュからスタイルを取得
+    const styleHash = window.location.hash || '#inozu';
+    const styleName = styleHash.replace('#', '');
 
     // MapLibreのマップを初期化
     const map = new maplibregl.Map({
       container: 'map', // マップを表示するdivのID
-      style: styles[currentHash], // ハッシュに基づいたスタイル
-      center: [139.6917, 35.6895], // 東京の座標
-      zoom: 8,
+      style: styles[styleName], // ハッシュに基づいたスタイル
+      center: [lng, lat], // クエリから取得した座標
+      zoom: zoom,
       minZoom: 4, // 最小ズーム
       maxZoom: 20, // 最大ズーム
       localIdeographFontFamily: false
@@ -101,6 +108,21 @@
       map.setStyle(styles["kyuhan"]); // スタイルを設定
       window.location.hash = "kyuhan"; // URLの末尾に#kyuhanを設定
     });
+
+    // 地図状態をクエリパラメータに保存
+    map.on('moveend', () => {
+      const center = map.getCenter();
+      const currentZoom = map.getZoom();
+      const queryParams = `?lat=${center.lat.toFixed(5)}&lng=${center.lng.toFixed(5)}&zoom=${currentZoom.toFixed(2)}`;
+      history.replaceState(null, '', queryParams + window.location.hash);
+    });
+
+    // ハッシュを変更したときにスタイルを更新
+    window.addEventListener('hashchange', () => {
+      const newHash = window.location.hash.replace('#', '');
+      map.setStyle(styles[newHash]);
+    });
+
   </script>
 </body>
 </html>
